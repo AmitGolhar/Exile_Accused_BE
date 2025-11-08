@@ -19,7 +19,7 @@ public class ExileRecord {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+	
     private String srNo;
     private String policeStation;
     private String nameOfAccused;
@@ -35,10 +35,12 @@ public class ExileRecord {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] photo;  // 🆕 store image as bytes
     
+    // ✅ Proper ManyToOne mapping for exile_data_id foreign key
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exile_data_id")
+    @JoinColumn(name = "exile_data_id", nullable = false)
     @JsonBackReference
     private ExileData exileData;
+
     
 	public ExileRecord() {
 		super();

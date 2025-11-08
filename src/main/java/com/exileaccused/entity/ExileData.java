@@ -32,7 +32,7 @@ public class ExileData {
     @OneToMany(mappedBy = "exileData", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ExileRecord> records;
-    
+
 
 	public ExileData() {
 		super();

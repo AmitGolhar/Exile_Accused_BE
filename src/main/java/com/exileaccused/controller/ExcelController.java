@@ -1,5 +1,6 @@
 package com.exileaccused.controller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,5 +123,27 @@ public class ExcelController {
 		recordRepo.save(existing);
 		return ResponseEntity.ok(existing);
 	}
+	
+	@PostMapping("/manual-entry")
+	public ResponseEntity<?> addManualRecord(@RequestBody ExileRecord record) {
+
+	    ExileData defaultData = exileRepo.findById(1L)
+	            .orElseGet(() -> {
+	                ExileData data = new ExileData();
+	                data.setId(1L);
+	                data.setUploadedBy("Manual Entry Default");
+	                return exileRepo.save(data);
+	            });
+
+	    Long latestSrNo = recordRepo.findMaxSrNo();
+	    long nextSrNo = (latestSrNo != null ? latestSrNo + 1 : 1);
+
+	    record.setSrNo(String.valueOf(nextSrNo));
+	    record.setExileData(defaultData);
+
+	    ExileRecord savedRecord = recordRepo.save(record);
+	    return ResponseEntity.ok(savedRecord);
+	}
+
 
 }
